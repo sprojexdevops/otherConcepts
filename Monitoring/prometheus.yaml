@@ -24,6 +24,7 @@ scrape_configs:
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
+    # https://stackoverflow.com/questions/49829423/prometheus-add-target-specific-label-in-static-configs
 
     static_configs:
       - targets: ["localhost:9090"]
