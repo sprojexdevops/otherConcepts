@@ -1,7 +1,5 @@
 # Prometheus
 
-![alt text](prometheus.svg)
-
 Reference: https://prometheus.io/download/
 
 * move to /opt directory
