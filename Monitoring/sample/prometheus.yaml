@@ -9,11 +9,12 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-          - "localhost:9093"
+          # - alertmanager:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
-  - "alert-rules/*.yaml"
+  # - "first_rules.yml"
+  # - "second_rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
@@ -23,25 +24,15 @@ scrape_configs:
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
+    # https://stackoverflow.com/questions/49829423/prometheus-add-target-specific-label-in-static-configs
 
     static_configs:
       - targets: ["localhost:9090"]
+        labels:
+          name: "prometheus"
 
-  - job_name: ec2
-    ec2_sd_configs:
-    - region: us-east-1
-      port: 9100
-      filters:
-        - name: tag:Monitoring
-          values:
-            - true
-    relabel_configs:
-      - source_labels:
-          - __meta_ec2_instance_id
-        target_label: instance_id
-      - source_labels:
-          - __meta_ec2_tag_Name
-        target_label: name
-      - source_labels:
-          - __meta_ec2_private_ip
-        target_label: private_ip
+  - job_name: "node-1"
+    static_configs:
+      - targets: ["172.31.42.27:9100"]
+        labels:
+          name: "node-1"
