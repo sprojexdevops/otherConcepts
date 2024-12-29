@@ -1,0 +1,209 @@
+1. Customer: "My deployment is stuck in a Pending state. What should I do?"
+Response: "This usually happens when there aren't enough resources available."
+Troubleshooting Steps:
+Check the node resource availability with kubectl describe nodes.
+Look for pending pods with kubectl get pods -n <namespace>.
+Adjust resource requests or scale up your cluster.
+
+2. Customer: "My application crashes after deployment. How can I troubleshoot this?"
+Response: "We can investigate the pod logs to identify the issue."
+Troubleshooting Steps:
+Use kubectl logs <pod_name> -n <namespace> to fetch logs.
+Check for any application errors or exceptions.
+Validate environment variables and configurations.
+
+3. Customer: "Why is my service returning a 503 Service Unavailable error?"
+Response: "A 503 error typically indicates that the service is unable to reach your pods."
+Troubleshooting Steps:
+Verify that the pods backing the service are running with kubectl get pods.
+Check the service definition with kubectl describe service <service_name>.
+Ensure proper network policies are in place.
+
+4. Customer: "My deployment shows ImagePullBackOff. How can I fix this?"
+Response: "This error occurs when Kubernetes cannot pull the container image."
+Troubleshooting Steps:
+Check the image name and tag in your deployment manifest.
+Verify that the image exists in the specified container registry.
+If using a private registry, ensure proper image pull secrets are configured.
+
+5. Customer: "I updated my deployment, but the changes are not reflected. Why?"
+Response: "This could be due to caching or a lack of rollout."
+Troubleshooting Steps:
+Check the rollout status with kubectl rollout status deployment/<deployment_name>.
+Ensure the new image tag is updated in the deployment.
+Try manually triggering a rollout with kubectl rollout restart deployment/<deployment_name>.
+
+6. Customer: "My pods keep crashing with CrashLoopBackOff. What should I do?"
+Response: "This indicates that your pods are failing repeatedly."
+Troubleshooting Steps:
+Check the pod logs with kubectl logs <pod_name> to see the failure reason.
+Review the pod's resource requests/limits; they may be set too low.
+Ensure the application code does not have unhandled exceptions.
+
+7. Customer: "Why are my deployments taking too long?"
+Response: "Long deployments can occur due to various factors."
+Troubleshooting Steps:
+Check the pod events with kubectl describe pod <pod_name> for any issues.
+Review readiness and liveness probes; slow checks can delay deployments.
+Analyze the cluster’s resource utilization for potential bottlenecks.
+
+8. Customer: "I’m getting Unauthorized errors when trying to access my application."
+Response: "Unauthorized errors typically indicate an authentication issue."
+Troubleshooting Steps:
+Check the RBAC settings and ensure your user has permissions.
+Verify any authentication tokens being used are valid.
+Review the Ingress controller configurations if applicable.
+
+9. Customer: "My StatefulSet pods are not starting. What could be the issue?"
+Response: "StatefulSet failures can occur due to volume issues or misconfigurations."
+Troubleshooting Steps:
+Check if the persistent volume claims (PVCs) are bound with kubectl get pvc.
+Review the pod logs for any initialization errors.
+Validate the StatefulSet configuration and ensure it's set up correctly.
+
+10. Customer: "The new version of my app is not loading after deployment. Why?"
+Response: "There might be a caching issue or the service might not have updated."
+Troubleshooting Steps:
+Clear the browser cache or try accessing the app in incognito mode.
+Check if the correct service endpoint is being used.
+Confirm the deployment has rolled out successfully using kubectl get deployments.
+
+11. Customer: "I cannot scale my deployment up. What’s wrong?"
+Response: "Scaling issues may arise due to resource constraints."
+Troubleshooting Steps:
+Review cluster resource availability using kubectl describe nodes.
+Check any limits set on the deployment.
+Consider scaling the cluster itself or adjusting resource requests.
+
+12. Customer: "My application can't connect to the database after deployment."
+Response: "This could be a connectivity issue. Let’s investigate."
+Troubleshooting Steps:
+Verify the database service is running and accessible.
+Check environment variables or config maps for database connection strings.
+Ensure network policies allow communication between the app and the database.
+
+13. Customer: "Why is my Ingress resource not routing traffic correctly?"
+Response: "Ingress issues can arise from misconfiguration."
+Troubleshooting Steps:
+Verify the Ingress resource with kubectl describe ingress <ingress_name>.
+Check that the correct service is specified in the Ingress rules.
+Ensure the Ingress controller is properly configured and running.
+
+14. Customer: "My cluster is showing NotReady nodes. What does that mean?"
+Response: "NotReady nodes indicate issues with the node's health."
+Troubleshooting Steps:
+Check the node conditions with kubectl describe node <node_name>.
+Review the kubelet logs on the node for errors.
+Restart the node if necessary or investigate hardware issues.
+
+15. Customer: "Why is my pod running with a ContainerCreating status for too long?"
+Response: "This could be related to issues with the container runtime or networking."
+Troubleshooting Steps:
+Check pod events using kubectl describe pod <pod_name> for errors.
+Inspect the status of the container runtime (Docker, containerd, etc.).
+Ensure the required storage volumes are available and correctly mounted.
+
+16. Customer: "I’m facing FailedScheduling errors for my pods. What’s the issue?"
+Response: "FailedScheduling indicates there are no available nodes for your pods."
+Troubleshooting Steps:
+Review pod specifications for resource requests and constraints.
+Check node availability and resource capacity using kubectl get nodes.
+If using node selectors or affinities, ensure there are matching nodes.
+
+17. Customer: "My Helm deployment is failing. How can I troubleshoot?"
+Response: "Helm failures can occur due to misconfiguration or dependencies."
+Troubleshooting Steps:
+Check Helm release status with helm status <release_name>.
+Review the error logs with helm get all <release_name>.
+Validate the chart configurations and any required dependencies.
+
+18. Customer: "Why does my pod keep restarting after a deployment?"
+Response: "Frequent restarts can indicate application crashes or misconfigurations."
+Troubleshooting Steps:
+Use kubectl logs <pod_name> to check for errors.
+Investigate resource limits and readiness probes.
+Ensure the application is built to handle the environment it's deployed in.
+
+19. Customer: "My deployment is not using the latest image. What’s wrong?"
+Response: "This often happens if the image tag is cached."
+Troubleshooting Steps:
+Verify the image tag in your deployment manifest is updated.
+Use a unique tag for each deployment (e.g., version number).
+Trigger a rollout restart with kubectl rollout restart deployment/<deployment_name>.
+
+20. Customer: "Why do I see resource limits being exceeded for my pods?"
+Response: "Exceeding resource limits may cause your pods to get evicted."
+Troubleshooting Steps:
+Monitor resource usage with kubectl top pods.
+Adjust resource requests and limits in your deployment specifications.
+Consider scaling your deployment or increasing node capacity.
+
+21. Customer: "I cannot find my deployment logs. What should I do?"
+Response: "Logs are essential for troubleshooting. Let's retrieve them."
+Troubleshooting Steps:
+Use kubectl logs <pod_name> -n <namespace> to get the logs.
+Check if the pod is still running; if not, specify the --previous flag.
+Ensure logging is correctly configured in your application.
+
+22. Customer: "My application is not responding. What could be causing this?"
+Response: "There could be various reasons, including resource exhaustion."
+Troubleshooting Steps:
+Check the pod status using kubectl get pods -n <namespace>.
+Review the resource usage with kubectl top pods to see if any pods are resource-starved.
+Inspect the logs of the application pods for any runtime exceptions or errors.
+
+23. Customer: "I updated my ConfigMap, but my pods are not reflecting the changes. What should I do?"
+Response: "ConfigMaps require a pod restart to apply changes."
+Troubleshooting Steps:
+Confirm the ConfigMap was updated using kubectl describe configmap <configmap_name>.
+Restart the deployment with kubectl rollout restart deployment/<deployment_name>.
+Ensure the pods are using the updated ConfigMap correctly in their spec.
+
+24. Customer: "Why do I keep getting Failed to pull image errors?"
+Response: "This usually indicates issues with the image registry."
+Troubleshooting Steps:
+Verify the image name and tag in the deployment spec.
+Check the credentials for accessing a private registry.
+Confirm that the image exists in the specified repository.
+
+25. Customer: "My pod is not able to communicate with another service. What’s wrong?"
+Response: "Inter-service communication issues can stem from network policies."
+Troubleshooting Steps:
+Check the network policy configurations to ensure they allow traffic.
+Use kubectl exec -it <pod_name> -- curl <service_name>:<port> to test connectivity.
+Review the service definitions and ensure endpoints are correctly set.
+
+26. Customer: "Why am I seeing the ResourceQuotaExceeded error?"
+Response: "This error indicates that you have reached your resource quota limit."
+Troubleshooting Steps:
+Check the resource quotas in your namespace with kubectl describe quota.
+Review resource requests and limits of your deployments.
+Consider increasing the quota or optimizing resource usage.
+
+27. Customer: "I can’t access the dashboard after deploying it. What should I check?"
+Response: "Access issues can arise from misconfigured services or permissions."
+Troubleshooting Steps:
+Check the dashboard service and its endpoints with kubectl get services -n kubernetes-dashboard.
+Ensure proper RBAC permissions are set for your user or service account.
+Verify the Ingress or LoadBalancer settings if applicable.
+
+28. Customer: "My cluster is showing OutOfMemory errors. How can I fix this?"
+Response: "OutOfMemory errors suggest that pods are exceeding their memory limits."
+Troubleshooting Steps:
+Review the pods consuming the most memory with kubectl top pods.
+Adjust memory requests and limits in your deployment specs.
+Consider optimizing the application to reduce memory consumption.
+
+29. Customer: "My CronJob is not running as scheduled. What’s the issue?"
+Response: "There could be scheduling issues or resource conflicts."
+Troubleshooting Steps:
+Check the CronJob status with kubectl describe cronjob <cronjob_name>.
+Verify the timing of the schedule is correct.
+Inspect the logs of the previous jobs to check for errors.
+
+30. Customer: "Why is my service returning a 404 Not Found error?"
+Response: "A 404 error typically means the requested resource is not available."
+Troubleshooting Steps:
+Verify the service endpoint and path being accessed.
+Check the service configuration with kubectl describe service <service_name>.
+Ensure the appropriate deployment is running and has the necessary routes configured.
